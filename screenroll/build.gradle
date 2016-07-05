@@ -5,7 +5,8 @@ android {
     buildToolsVersion '24'
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion '23'
+        //noinspection OldTargetApi
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -16,8 +17,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
     }
     productFlavors {
     }
