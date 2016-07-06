@@ -280,7 +280,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         return listenerList != null ? new ArrayList<PermissionResolverListener>(listenerList) : Collections.<PermissionResolverListener>emptyList();
     }
 
-    public void setOnActivity(@NonNull AppCompatActivity activity) {
+    public void setForActivity(@NonNull AppCompatActivity activity) {
         final Intent intent = activity.getIntent();
         if (intent == null) {
             return;

@@ -3,9 +3,11 @@ package ua.example.picknroll;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // This must be done before first use of the object.
         PermissionScreen.setUp(this);
         mPermissionScreen = PermissionScreen.getInstance();
-        mPermissionScreen.setOnActivity(this);
+        mPermissionScreen.setForActivity(this);
         
         // Wire this activity's lifecycle with a PermissionScreen.
         // This must be done to prevent a memory leak.
@@ -63,6 +65,23 @@ public class MainActivity extends AppCompatActivity {
         mPermissionScreen.onActivityDestroy(this);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // This must always be done to check if this Activity was started by a PermissionScreen 
+        // to resolve a permission.
+        mPermissionScreen.checkIntent(intent);
+        super.onNewIntent(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // Pass the results into PermissionScreen to examine.
+        // This will check if a permission requested earlier is granted or not,
+        // and will notify a listener about it.
+        mPermissionScreen.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    
     public void populateEmailsAutocomplete() {
         final Set<String> emails = new HashSet<String>();
         final ContentResolver resolver = getContentResolver();
