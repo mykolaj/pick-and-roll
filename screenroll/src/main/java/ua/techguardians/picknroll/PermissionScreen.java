@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -141,7 +142,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
     }
 
     private void notifyNeedRationale(final String permission) {
-        final List<PermissionResolverListener> listeners = getListenersForPermission(permission);
+        final Collection<PermissionResolverListener> listeners = getListenersForPermission(permission);
         if (!listeners.isEmpty()) {
             synchronized (this.listenerMapping) {
                 for (final PermissionResolverListener listener : listeners) {
@@ -152,7 +153,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
     }
 
     private void notifyPermissionDeniedAndNeverAskAgainChecked(final String permission) {
-        final List<PermissionResolverListener> listeners = getListenersForPermission(permission);
+        final Collection<PermissionResolverListener> listeners = getListenersForPermission(permission);
         if (!listeners.isEmpty()) {
             synchronized (this.listenerMapping) {
                 for (final PermissionResolverListener listener : listeners) {
@@ -163,7 +164,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
     }
 
     private void notifyPermissionGranted(final String permission) {
-        final List<PermissionResolverListener> listeners = getListenersForPermission(permission);
+        final Collection<PermissionResolverListener> listeners = getListenersForPermission(permission);
         if (!listeners.isEmpty()) {
             synchronized (this.listenerMapping) {
                 final Iterator<PermissionResolverListener> iterator = listeners.iterator();
@@ -275,9 +276,9 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         return code != null ? code : -1;
     }
 
-    private List<PermissionResolverListener> getListenersForPermission(String permission) {
+    private Collection<PermissionResolverListener> getListenersForPermission(String permission) {
         final Set<PermissionResolverListener> listenerList = listenerMapping.get(permission);
-        return listenerList != null ? new ArrayList<PermissionResolverListener>(listenerList) : Collections.<PermissionResolverListener>emptyList();
+        return listenerList != null ? listenerList : Collections.<PermissionResolverListener>emptyList();
     }
 
     public void setForActivity(@NonNull AppCompatActivity activity) {
