@@ -17,23 +17,19 @@
 package ua.techguardians.picknroll;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -44,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Author:     A. Mykolaj
  * Project:    Pick'n'Roll
  */
-public final class PermissionScreen implements ActivityCompat.OnRequestPermissionsResultCallback {
+public final class PermissionScreen {
 
     private static final String ACTION_PERMISSION_PICK_RESOLVE_REQUEST = "action_permission_pick_resolve_request";
     private static final String PERMISSION_PICK_EXTRA_PERMISSION = "permission_pick_extra_permission";
@@ -85,9 +81,15 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         this.appContext = context.getApplicationContext();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public void handlePermission(String permission, short requestCode, Class<? extends Activity> activityClass, PermissionResolverListener l) {
+        if (Build.VERSION.SDK_INT < 23) {
+            Log.w(LOG_TAG, "Skip resolving a permission '" + permission + "'." +
+                    " Current device's SDK is lower than 23.");
+            return;
+        }
         // TODO Check if a permission is already in a queue and skip it
-        final int result = ContextCompat.checkSelfPermission(this.appContext, permission);
+        final int result = appContext.checkSelfPermission(permission);
         if (PackageManager.PERMISSION_GRANTED == result) {
             // Skip this permission because it's granted already
             if (l != null) {
@@ -111,8 +113,11 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         resolveNext();
     }
 
-    @Override
-    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+    @TargetApi(Build.VERSION_CODES.M)
+    public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults) {
+        if (Build.VERSION.SDK_INT < 23) {
+            return;
+        }
         final String permission = permissionToReqCodeReverseMapping.get((short)requestCode);
         for (int i = 0; i < permissions.length; i++) {
             final String p = permissions[i];
@@ -125,10 +130,10 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
                 } else {
                     final Activity activity = getActivityForPermission(permission);
                     if (activity == null) {
-                        Log.e("Pick'n'Roll", "No activity registered to resolve permission \"" + permission + "\"");
+                        Log.e(LOG_TAG, "No activity registered to resolve permission \"" + permission + "\"");
                         return;
                     }
-                    boolean rationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+                    boolean rationale = activity.shouldShowRequestPermissionRationale(permission);
                     if (rationale) {
                         // User maybe confused
                         notifyNeedRationale(permission);
@@ -215,7 +220,10 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         startResolveProtocol(permission);
     }
 
-    private void startResolveProtocol(@NonNull String permission) {
+    private void startResolveProtocol(String permission) {
+        if (Build.VERSION.SDK_INT < 23) {
+            return;
+        }
         //noinspection ConstantConditions
         if (permission == null) {
             // Should not happen
@@ -231,7 +239,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
                 // Should not happen
                 throw new IllegalStateException(LOG_TAG + ": request code must be specified");
             }
-            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+            activity.requestPermissions(new String[]{permission}, requestCode);
         } else {
             final Class<? extends Activity> cls = permissionToActivityClassMapping.get(permission);
             final Intent intent = new Intent(appContext, cls)
@@ -246,7 +254,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
     }
 
     @SuppressWarnings({"WhileLoopReplaceableByForEach"})
-    private Activity getActivityForPermission(@NonNull String permission) {
+    private Activity getActivityForPermission(String permission) {
         //noinspection ConstantConditions
         if (permission == null) {
             return null;
@@ -267,7 +275,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         return null;
     }
 
-    private short getRequestCodeForPermission(@NonNull String permission) {
+    private short getRequestCodeForPermission(String permission) {
         //noinspection ConstantConditions
         if (permission == null) {
             return -1;
@@ -281,7 +289,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         return listenerList != null ? listenerList : Collections.<PermissionResolverListener>emptyList();
     }
 
-    public void setForActivity(@NonNull AppCompatActivity activity) {
+    public void setForActivity(Activity activity) {
         final Intent intent = activity.getIntent();
         if (intent == null) {
             return;
@@ -289,7 +297,7 @@ public final class PermissionScreen implements ActivityCompat.OnRequestPermissio
         checkIntent(intent);
     }
 
-    public void checkIntent(@NonNull Intent intent) {
+    public void checkIntent(Intent intent) {
         //noinspection ConstantConditions
         if (intent == null) {
             return;
