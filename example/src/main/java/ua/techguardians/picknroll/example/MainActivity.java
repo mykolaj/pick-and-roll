@@ -1,4 +1,4 @@
-package ua.example.picknroll;
+package ua.techguardians.picknroll.example;
 
 import android.Manifest;
 import android.content.ContentResolver;

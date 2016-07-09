@@ -1,7 +1,4 @@
-/**
- * Created by tony on 7/5/16.
- */
-package ua.example.picknroll;
+package ua.techguardians.picknroll.example;
 
 public class Constants {
 
