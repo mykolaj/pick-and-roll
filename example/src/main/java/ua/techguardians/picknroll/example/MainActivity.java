@@ -23,7 +23,7 @@ import java.util.Set;
 import ua.techguardians.picknroll.PermissionScreen;
 
 public class MainActivity extends AppCompatActivity {
-    
+
     private PermissionScreen mPermissionScreen;
     private AutoCompleteTextView mEditEmailAutoComplete;
     private EmailAdapter mEmailAdapter;
@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
         PermissionScreen.setUp(this);
         mPermissionScreen = PermissionScreen.getInstance();
         mPermissionScreen.setForActivity(this);
-        
+
         // Wire this activity's lifecycle with a PermissionScreen.
         // This must be done to prevent a memory leak.
         mPermissionScreen.onActivityCreate(this);
-        
-        // Now lets try to read contacts. 
+
+        // Now lets try to read contacts.
         // This will throw a SecurityException because a user haven't got READ_CONTACTS permission
         // confirmed yet.
         populateEmailsAutocomplete();
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
+
         // Wire this activity's lifecycle with a PermissionScreen
         // This must be done to prevent a memory leak.
         mPermissionScreen.onActivityDestroy(this);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        // This must always be done to check if this Activity was started by a PermissionScreen 
+        // This must always be done to check if this Activity was started by a PermissionScreen
         // to resolve a permission.
         mPermissionScreen.checkIntent(intent);
         super.onNewIntent(intent);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mPermissionScreen.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    
+
     public void populateEmailsAutocomplete() {
         final Set<String> emails = new HashSet<String>();
         final ContentResolver resolver = getContentResolver();
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (SecurityException e) {
             mPermissionScreen.handlePermission(Manifest.permission.READ_CONTACTS, // A permission to resolve
-                            Constants.CONTACT_PERMISSION_REQUEST_CODE,        // A request code to use to resolve this permission (must be unique among different permissions)
-                            MainActivity.class,                               // Activity which should be launched to resolve this permission
-                            new ContactPermissionResolverListenerImpl());     // A listener to be notified about protocol events
+                    Constants.CONTACT_PERMISSION_REQUEST_CODE,        // A request code to use to resolve this permission (must be unique among different permissions)
+                    MainActivity.class,                               // Activity which should be launched to resolve this permission
+                    new ContactPermissionResolverListenerImpl());     // A listener to be notified about protocol events
             return;
         }
 
@@ -154,5 +154,5 @@ public class MainActivity extends AppCompatActivity {
             return view;
         }
     }
-    
+
 }

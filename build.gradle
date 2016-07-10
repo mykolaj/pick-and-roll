@@ -1,23 +1,30 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+subprojects {
 
-buildscript {
+    buildscript {
+        repositories {
+            jcenter()
+        }
+    }
+
     repositories {
         jcenter()
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    plugins.apply('checkstyle')
+
+    task('checkstyle', type: Checkstyle) {
+        configFile rootProject.file('config/checkstyle/checkstyle.xml')
+        source 'src/main/java'
+        ignoreFailures false
+        showViolations true
+        include '**/*.java'
+
+        classpath = files()
+    }
+    group = GROUP
+    version = VERSION_NAME
+    afterEvaluate {
+        tasks.findByName('check').dependsOn('checkstyle')
     }
 }
-
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+apply from: rootProject.file('dep.gradle')

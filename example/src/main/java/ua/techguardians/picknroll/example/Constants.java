@@ -1,6 +1,6 @@
 package ua.techguardians.picknroll.example;
 
-public class Constants {
+public final class Constants {
 
     public static final short CONTACT_PERMISSION_REQUEST_CODE = 10;
     

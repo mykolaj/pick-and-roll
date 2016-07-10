@@ -1,15 +1,17 @@
+buildscript {
+    dependencies {
+        classpath dep.androidPlugin
+    }
+}
+
 apply plugin: 'com.android.library'
-apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '24'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
-        minSdkVersion 4
-        //noinspection OldTargetApi
-        targetSdkVersion 23
-        versionCode 1
-        versionName '0.2'
+        minSdkVersion rootProject.ext.minSdkVersion
     }
     buildTypes {
         release {
@@ -18,13 +20,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
     }
     productFlavors {
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'

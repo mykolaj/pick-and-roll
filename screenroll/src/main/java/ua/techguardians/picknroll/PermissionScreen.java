@@ -44,7 +44,8 @@ public final class PermissionScreen {
 
     private static final String ACTION_PERMISSION_PICK_RESOLVE_REQUEST = "action_permission_pick_resolve_request";
     private static final String PERMISSION_PICK_EXTRA_PERMISSION = "permission_pick_extra_permission";
-    public static String LOG_TAG = "PermissionScreen";
+    private static final int SDK_23 = 23;
+    private static String logTag = "PermissionScreen";
 
     @SuppressLint("StaticFieldLeak")
     private static PermissionScreen instance;
@@ -59,8 +60,8 @@ public final class PermissionScreen {
 
     public static PermissionScreen getInstance() {
         if (instance == null) {
-            throw new IllegalStateException(LOG_TAG + ": setUp(Context context) method must be " +
-                    "called before the first usage of " + PermissionScreen.class.getSimpleName());
+            throw new IllegalStateException(logTag + ": setUp(Context context) method must be "
+                    + "called before the first usage of " + PermissionScreen.class.getSimpleName());
         }
         return instance;
     }
@@ -83,9 +84,9 @@ public final class PermissionScreen {
 
     @TargetApi(Build.VERSION_CODES.M)
     public void handlePermission(String permission, short requestCode, Class<? extends Activity> activityClass, PermissionResolverListener l) {
-        if (Build.VERSION.SDK_INT < 23) {
-            Log.w(LOG_TAG, "Skip resolving a permission '" + permission + "'." +
-                    " Current device's SDK is lower than 23.");
+        if (Build.VERSION.SDK_INT < SDK_23) {
+            Log.w(logTag, "Skip resolving a permission '" + permission + "'."
+                    + " Current device's SDK is lower than 23.");
             return;
         }
         // TODO Check if a permission is already in a queue and skip it
@@ -115,10 +116,10 @@ public final class PermissionScreen {
 
     @TargetApi(Build.VERSION_CODES.M)
     public void onRequestPermissionsResult(final int requestCode, final String[] permissions, final int[] grantResults) {
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < SDK_23) {
             return;
         }
-        final String permission = permissionToReqCodeReverseMapping.get((short)requestCode);
+        final String permission = permissionToReqCodeReverseMapping.get((short) requestCode);
         for (int i = 0; i < permissions.length; i++) {
             final String p = permissions[i];
             if (p.equals(permission)) {
@@ -130,7 +131,7 @@ public final class PermissionScreen {
                 } else {
                     final Activity activity = getActivityForPermission(permission);
                     if (activity == null) {
-                        Log.e(LOG_TAG, "No activity registered to resolve permission \"" + permission + "\"");
+                        Log.e(logTag, "No activity registered to resolve permission \"" + permission + "\"");
                         return;
                     }
                     boolean rationale = activity.shouldShowRequestPermissionRationale(permission);
@@ -221,13 +222,13 @@ public final class PermissionScreen {
     }
 
     private void startResolveProtocol(String permission) {
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < SDK_23) {
             return;
         }
         //noinspection ConstantConditions
         if (permission == null) {
             // Should not happen
-            throw new IllegalStateException(LOG_TAG + ": permission must not be null");
+            throw new IllegalStateException(logTag + ": permission must not be null");
         }
         final Activity activity = getActivityForPermission(permission);
 
@@ -237,7 +238,7 @@ public final class PermissionScreen {
             final short requestCode = getRequestCodeForPermission(permission);
             if (requestCode == -1) {
                 // Should not happen
-                throw new IllegalStateException(LOG_TAG + ": request code must be specified");
+                throw new IllegalStateException(logTag + ": request code must be specified");
             }
             activity.requestPermissions(new String[]{permission}, requestCode);
         } else {
@@ -310,7 +311,7 @@ public final class PermissionScreen {
             final String permission = intent.getStringExtra(PERMISSION_PICK_EXTRA_PERMISSION);
             if (permission == null) {
                 // Should not happen
-                throw new IllegalStateException(LOG_TAG + ": permission can not be 'null'");
+                throw new IllegalStateException(logTag + ": permission can not be 'null'");
             }
             startResolveProtocol(permission);
         }
