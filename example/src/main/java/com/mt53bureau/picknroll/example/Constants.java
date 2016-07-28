@@ -1,4 +1,4 @@
-package ua.techguardians.picknroll.example;
+package com.mt53bureau.picknroll.example;
 
 public final class Constants {
 

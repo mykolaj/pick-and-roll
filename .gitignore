@@ -54,7 +54,7 @@ Thumbs.db
 # Subversion repository files
 .svn/
 
-# file needed and created by the GitEye git client
+# This file is created by the GitEye git client
 .project
 
 # Midnight Commander's file

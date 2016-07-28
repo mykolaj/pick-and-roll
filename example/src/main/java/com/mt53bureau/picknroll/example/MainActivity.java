@@ -1,4 +1,4 @@
-package ua.techguardians.picknroll.example;
+package com.mt53bureau.picknroll.example;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import android.widget.TextView;
 import java.util.HashSet;
 import java.util.Set;
 
-import ua.techguardians.picknroll.PermissionScreen;
+import com.mt53bureau.picknroll.PermissionScreen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // Pass the results into PermissionScreen to examine.
         // This will check if a permission requested earlier is granted or not,
         // and will notify a listener about it.

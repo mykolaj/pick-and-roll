@@ -1,4 +1,4 @@
-package ua.techguardians.picknroll;
+package com.mt53bureau.picknroll;
 
 import org.junit.Test;
 
