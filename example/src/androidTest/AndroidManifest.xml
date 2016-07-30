@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
- This file's purpose is to skip error from ManifestMerger when compiling against UIAutomator:
+ This file's purpose is to skip an error from ManifestMerger when compiling against UIAutomator:
  Manifest merger failed : uses-sdk:minSdkVersion 15 cannot be smaller than version 18 declared in library.
  Obviously the UIAutomator tests still can not be ran on devices with SDK < 18
  -->
