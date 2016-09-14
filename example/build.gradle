@@ -1,19 +1,19 @@
 buildscript {
     dependencies {
-        classpath dep.androidPlugin
+        classpath "$dep.androidPlugin"
     }
 }
 
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion Integer.valueOf(rootProject.ext.compileSdkVersion)
+    buildToolsVersion "$rootProject.ext.buildToolsVersion"
     
     defaultConfig {
-        applicationId 'ua.techguardians.picknroll.example'
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        applicationId 'com.mt53bureau.picknroll.example'
+        minSdkVersion "$rootProject.ext.minSdkVersion"
+        targetSdkVersion "$rootProject.ext.targetSdkVersion"
         versionCode 1
         versionName "1.0"
     }
@@ -24,17 +24,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-        targetCompatibility rootProject.ext.targetCompatibilityVersion
+        sourceCompatibility "$rootProject.ext.sourceCompatibilityVersion"
+        targetCompatibility "$rootProject.ext.targetCompatibilityVersion"
     }
     productFlavors {
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile project(':screenroll')
+    compile fileTree(include: ['*.jar'], dir: 'libs');
+    testCompile 'junit:junit:4.12';
+    compile project(':screenroll');
+    compile "$dep.appcompat_v7";
+    compile "$dep.supportDesign";
 }

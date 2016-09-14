@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ua.techguardians.picknroll;
+package com.mt53bureau.picknroll;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

@@ -1,4 +1,4 @@
-package ua.techguardians.picknroll.example;
+package com.mt53bureau.picknroll.example;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.util.HashSet;
 import java.util.Set;
 
-import ua.techguardians.picknroll.PermissionScreen;
+import com.mt53bureau.picknroll.PermissionScreen;
 
 public class MainActivity extends AppCompatActivity {
 

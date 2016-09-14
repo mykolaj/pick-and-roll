@@ -27,4 +27,4 @@ subprojects {
         tasks.findByName('check').dependsOn('checkstyle')
     }
 }
-apply from: rootProject.file('dep.gradle')
+apply from: rootProject.file('depconfig.gradle')

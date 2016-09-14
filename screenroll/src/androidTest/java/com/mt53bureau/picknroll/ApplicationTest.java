@@ -1,4 +1,4 @@
-package ua.techguardians.picknroll;
+package com.mt53bureau.picknroll;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

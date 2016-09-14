@@ -1,17 +1,17 @@
 buildscript {
     dependencies {
-        classpath dep.androidPlugin
+        classpath "$dep.androidPlugin"
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion Integer.valueOf("$rootProject.ext.compileSdkVersion")
+    buildToolsVersion "$rootProject.ext.buildToolsVersion"
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion "$rootProject.ext.minSdkVersion"
     }
     buildTypes {
         release {
@@ -20,8 +20,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-        targetCompatibility rootProject.ext.targetCompatibilityVersion
+        sourceCompatibility "$rootProject.ext.sourceCompatibilityVersion"
+        targetCompatibility "$rootProject.ext.targetCompatibilityVersion"
     }
     productFlavors {
     }

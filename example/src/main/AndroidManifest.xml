@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="ua.techguardians.picknroll.example"
+<manifest package="com.mt53bureau.picknroll.example"
           xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name=".MainActivity"
+            android:name="com.mt53bureau.picknroll.example.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
             >
