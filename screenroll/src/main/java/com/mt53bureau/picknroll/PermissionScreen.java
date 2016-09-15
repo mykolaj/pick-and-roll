@@ -45,7 +45,8 @@ public final class PermissionScreen {
     private static final String ACTION_PERMISSION_PICK_RESOLVE_REQUEST = "action_permission_pick_resolve_request";
     private static final String PERMISSION_PICK_EXTRA_PERMISSION = "permission_pick_extra_permission";
     private static final int SDK_23 = 23;
-    private static String logTag = "PermissionScreen";
+    /* Allow a user code to change this tag */
+    public static String log_tag = "PermissionScreen";
 
     @SuppressLint("StaticFieldLeak")
     private static PermissionScreen instance;
@@ -60,7 +61,7 @@ public final class PermissionScreen {
 
     public static PermissionScreen getInstance() {
         if (instance == null) {
-            throw new IllegalStateException(logTag + ": setUp(Context context) method must be "
+            throw new IllegalStateException(log_tag + ": setUp(Context context) method must be "
                     + "called before the first usage of " + PermissionScreen.class.getSimpleName());
         }
         return instance;
@@ -85,8 +86,14 @@ public final class PermissionScreen {
     @TargetApi(Build.VERSION_CODES.M)
     public void handlePermission(String permission, short requestCode, Class<? extends Activity> activityClass, PermissionResolverListener l) {
         if (Build.VERSION.SDK_INT < SDK_23) {
-            Log.w(logTag, "Skip resolving a permission '" + permission + "'."
-                    + " Current device's SDK is lower than 23.");
+            Log.d(log_tag, "Skip resolving a permission '" + permission + "'."
+                    + " Current device's SDK is " + Build.VERSION.SDK_INT + " which is lower than "
+                    + SDK_23 + ".");
+            // Call a delegate function right away.
+            // This makes a code flow to be the same on all SDK's.
+            if (l != null) {
+                l.onPermissionGranted(permission);
+            }
             return;
         }
         // TODO Check if a permission is already in a queue and skip it
@@ -131,7 +138,7 @@ public final class PermissionScreen {
                 } else {
                     final Activity activity = getActivityForPermission(permission);
                     if (activity == null) {
-                        Log.e(logTag, "No activity registered to resolve permission \"" + permission + "\"");
+                        Log.e(log_tag, "No activity registered to resolve permission \"" + permission + "\"");
                         return;
                     }
                     boolean rationale = activity.shouldShowRequestPermissionRationale(permission);
@@ -228,7 +235,7 @@ public final class PermissionScreen {
         //noinspection ConstantConditions
         if (permission == null) {
             // Should not happen
-            throw new IllegalStateException(logTag + ": permission must not be null");
+            throw new IllegalStateException(log_tag + ": permission must not be null");
         }
         final Activity activity = getActivityForPermission(permission);
 
@@ -238,7 +245,7 @@ public final class PermissionScreen {
             final short requestCode = getRequestCodeForPermission(permission);
             if (requestCode == -1) {
                 // Should not happen
-                throw new IllegalStateException(logTag + ": request code must be specified");
+                throw new IllegalStateException(log_tag + ": request code must be specified");
             }
             activity.requestPermissions(new String[]{permission}, requestCode);
         } else {
@@ -311,7 +318,7 @@ public final class PermissionScreen {
             final String permission = intent.getStringExtra(PERMISSION_PICK_EXTRA_PERMISSION);
             if (permission == null) {
                 // Should not happen
-                throw new IllegalStateException(logTag + ": permission can not be 'null'");
+                throw new IllegalStateException(log_tag + ": permission can not be 'null'");
             }
             startResolveProtocol(permission);
         }
